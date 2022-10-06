@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getDbConnection, insertImage } from "../services/db-service";
+import { insertImage } from "../services/db-service";
 import {
   TextInput,
   Text,
@@ -9,10 +9,13 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
+import { useDbContext } from "../context/DbContext";
 
 const UrlInput = () => {
   const [url, setUrl] = useState("");
   const [error, setError] = useState(null);
+  const db = useDbContext();
+
   function handleUrlChange(text) {
     setUrl(text);
   }
@@ -22,13 +25,10 @@ const UrlInput = () => {
       return;
     }
     try {
-      const db = await getDbConnection();
       await insertImage(db, url);
       Alert.alert('Success', 'Add url successfully', [{ text: 'OK' }]);
-      db.close();
     } catch (e) {
       setError(`An error occurred while adding the URL: ${e.message}`);
-      console.log(e);
     }
   }
   return (

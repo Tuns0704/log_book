@@ -1,4 +1,6 @@
-import { openDatabase } from 'react-native-sqlite-storage';
+import { openDatabase, enablePromise } from 'react-native-sqlite-storage';
+
+enablePromise(true);
 
 const DATABASE_NAME = "logbook.db";
 
@@ -25,10 +27,10 @@ export async function insertImage(db, url) {
 
 export async function getImages(db) {
   const images = [];
-  const results = await db.executeSql('Select * from Image');
+  const results = await db.executeSql('SELECT * FROM Image');
   results.forEach(function (resultSet) {
     for (let i = 0; i < resultSet.rows.length; i++) {
-      images.push(results.rows.item(i));
+      images.push(resultSet.rows.item(i));
     }
   });
   return images;

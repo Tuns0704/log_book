@@ -1,5 +1,6 @@
-import React, { useCallback, useState, useFocusEffect } from "react";
-import { getDbConnection, getImages } from "../db-service";
+import React, { useState, useEffect } from "react";
+import { getImages } from "../services/db-service";
+import { useDbContext } from "../context/DbContext";
 import {
   Text,
   View,
@@ -9,23 +10,22 @@ import {
 } from "react-native";
 import Swiper from 'react-native-swiper';
 
-const ImageSwiper = (props) => {
+const ImageSwiper = () => {
   const [images, setImage] = useState([]);
   const [error, setError] = useState(null);
-  const focusEffect = useCallback(function () {
-    async function fetchDb() {
+  const db = useDbContext();
+
+  useEffect(function () {
+    async function fetchData() {
       try {
-        const db = await getDbConnection();
         const imagesFromDb = await getImages(db);
         setImage(imagesFromDb);
-        db.close();
-      } catch (e) {
-        setError(`An error occurred while fetching images: ${e.message}`);
+      } catch (error) {
+        setError(error);
       }
     }
-    fetchDb();
-  }, []);
-  useFocusEffect(focusEffect)
+    fetchData();
+  }, [db]);
 
   if (error) {
     return <Text>{error.message}</Text>
@@ -46,8 +46,8 @@ const ImageSwiper = (props) => {
       >
         {images.map((item, index) => {
           return (
-            <View key={item.id}>
-              <Image source={{ uri: item.url }} style={styles.image} />
+            <View key={(item) => item.imageId}>
+              <Image source={{ uri: item.imageUrl }} style={styles.image} />
             </View>
           );
         })}

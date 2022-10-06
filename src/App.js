@@ -3,9 +3,11 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import React, { useEffect } from "react";
+// import React, { useEffect } from "react";
+import React from "react";
 import { ImageSwiper, Camera, UrlInput } from "./components";
-import { initDatabase } from "./services/db-service";
+// import { initDatabase } from "./services/db-service";
+import { DbContextProvider } from "./context/DbContext";
 
 const images = [
   {
@@ -39,19 +41,21 @@ const images = [
 ];
 
 const App = () => {
-  useEffect(function () {
-    async function init() {
-      await initDatabase();
-    }
-    init();
-  }, []);
+  // useEffect(function () {
+  //   async function init() {
+  //     await initDatabase();
+  //   }
+  //   init();
+  // }, []);
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.HeaderTitle}>Logbook</Text>
-      <ImageSwiper images={images} />
-      <UrlInput />
-      <Camera />
-    </ScrollView>
+    <DbContextProvider>
+      <ScrollView style={styles.container}>
+        <Text style={styles.HeaderTitle}>Logbook</Text>
+        <ImageSwiper />
+        <UrlInput />
+        <Camera />
+      </ScrollView>
+    </DbContextProvider>
   );
 }
 
