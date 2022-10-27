@@ -35,7 +35,6 @@ const UrlInput = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.inputField}>
         <TextInput
-          selectionColor={"#888"}
           placeholder={"Input URL here"}
           onChangeText={handleUrlChange}
           value={url}

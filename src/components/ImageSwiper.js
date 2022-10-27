@@ -44,13 +44,14 @@ const ImageSwiper = () => {
           bottom: 50,
         }}
       >
-        {images.map((item, index) => {
-          return (
-            <View key={(item) => item.imageId}>
-              <Image source={{ uri: item.imageUrl }} style={styles.image} />
-            </View>
-          );
-        })}
+        {
+          images.map((item, index) => {
+            return (
+              <View key={(item) => item.imageId}>
+                <Image source={{ uri: item.imageUrl }} style={styles.image} />
+              </View>
+            );
+          })}
       </Swiper>
     </SafeAreaView>
   );
@@ -99,6 +100,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 50,
     fontWeight: 'bold'
+  },
+  buttonWrapperDelete: {
+    position: 'absolute',
+    zIndex: 1,
+    right: 45,
+    top: 15,
+  },
+  deleteButton: {
+    height: 30,
+    width: 30,
+    borderRadius: 20,
+    backgroundColor: '#ffffff',
+    color: '#333',
+    textAlign: 'center',
+    fontSize: 20,
   },
 });
 
